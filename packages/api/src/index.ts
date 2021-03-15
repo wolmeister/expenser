@@ -1,14 +1,13 @@
-import express from 'express';
+// import { Model } from 'objection';
 
 import debug from './debug';
+import { knex } from './knex';
+import { app } from './app';
 
-const app = express();
-app.use(express.json());
+// Setup knex
+// Model.knex(knex);
 
-app.get('/', (req, res) => {
-  res.send({ hello: 'world' });
-});
-
+// Init express
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
 app.listen(port, () => {
