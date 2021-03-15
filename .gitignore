@@ -8,3 +8,7 @@ tsconfig.tsbuildinfo
 # Production
 build/
 dist/
+dist-ssr/
+
+# Local files
+*.local
