@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
+import { isAuthenticated } from '../../common/authenticated';
 
 import { validate } from '../../common/validate';
 import { addUser } from './controller';
@@ -17,5 +18,9 @@ router.post(
     res.send(await addUser(req.body));
   }
 );
+
+router.get('/users/me', isAuthenticated, async (req, res) => {
+  res.send(await req.getUser());
+});
 
 export { router };

@@ -4,12 +4,14 @@ import 'express-async-errors';
 
 import { HttpError } from './common/http-error';
 import { ValidationsError } from './common/validations-error';
+import { router as authRouter } from './modules/auth';
 import { router as userRouter } from './modules/user';
 
 const app = express();
 app.use(express.json());
 
 // Setup routes
+app.use('/api', authRouter);
 app.use('/api', userRouter);
 
 // Setup error handling

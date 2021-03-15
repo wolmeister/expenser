@@ -11,3 +11,4 @@
 | DB_PASSWORD |             The database password             | `null`        |
 | DB_MIN_POOL |        The minimum database pool size         | `2`           |
 | DB_MAX_POOL |        The maximum database pool size         | `10`          |
+| JWT_SECRET  |      The secret to sign/verify all JWT's      | `expenser`    |

@@ -22,6 +22,7 @@
     "express-async-errors": "^3.1.1",
     "express-validator": "^6.10.0",
     "http-status-codes": "^2.1.4",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.2",
     "objection": "^2.2.14",
     "pg": "^8.5.1"
@@ -30,6 +31,7 @@
     "@types/bcryptjs": "^2.4.2",
     "@types/debug": "^4.1.5",
     "@types/express": "^4.17.11",
+    "@types/jsonwebtoken": "^8.5.0",
     "@types/node": "^14.14.34",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
