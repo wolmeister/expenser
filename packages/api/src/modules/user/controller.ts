@@ -14,9 +14,12 @@ export async function addUser(user: User): Promise<User> {
   } catch (err) {
     if (err instanceof UniqueViolationError) {
       if (err.constraint === UserConstraints.UNIQUE_EMAIL) {
-        throw new ValidationsError([
-          { msg: 'value not unique', param: 'email', location: 'body', value: user.email },
-        ]);
+        throw new ValidationsError({
+          msg: 'Value not unique',
+          param: 'email',
+          location: 'body',
+          value: user.email,
+        });
       }
     }
     throw err;
