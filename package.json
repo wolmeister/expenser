@@ -1,0 +1,15 @@
+{
+  "name": "@expenser/root",
+  "author": "Victor Wolmeister",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/**"
+  ],
+  "scripts": {
+    "api": "yarn workspace @expenser/api",
+    "web": "yarn workspace @expenser/web"
+  },
+  "devDependencies": {}
+}

@@ -1,0 +1,14 @@
+{
+  "name": "@expenser/api",
+  "author": "Victor Wolmeister",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc --build"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

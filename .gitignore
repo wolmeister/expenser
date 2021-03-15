@@ -1,0 +1,10 @@
+# Dependencies
+node_modules/
+
+# Debug
+yarn-error.log*
+tsconfig.tsbuildinfo
+
+# Production
+build/
+dist/
