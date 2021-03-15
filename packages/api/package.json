@@ -8,11 +8,18 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc --build",
-    "dev": "ts-node-dev --respawn --transpile-only --clear -r dotenv/config src/index.ts"
+    "dev": "ts-node-dev --respawn --transpile-only --clear -r dotenv/config src/index.ts",
+    "add-migration": "knex migrate:make -x ts",
+    "run-migrations": "knex migrate:latest",
+    "run-last-migration": "knex migrate:up",
+    "rollback-migrations": "knex migrate:rollback",
+    "rollback-last-migration": "knex migrate:down"
   },
   "dependencies": {
     "debug": "^4.3.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "knex": "^0.95.2",
+    "pg": "^8.5.1"
   },
   "devDependencies": {
     "@types/debug": "^4.1.5",
