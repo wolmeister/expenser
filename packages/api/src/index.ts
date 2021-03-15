@@ -1,5 +1,7 @@
 import express from 'express';
 
+import debug from './debug';
+
 const app = express();
 app.use(express.json());
 
@@ -8,5 +10,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log('listening on port 3000');
+  debug.http('Listening on port 3000');
 });
