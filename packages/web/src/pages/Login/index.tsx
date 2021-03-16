@@ -2,8 +2,6 @@ import React from 'react';
 import { Redirect } from 'wouter';
 import { useForm } from 'react-hook-form';
 
-import { useAppContext } from '../../contexts/AppContext';
-import { authenticate, setAuthenticationToken } from '../../services/authService';
 import { useAuth } from '../../hooks/useAuth';
 
 type FormData = {
