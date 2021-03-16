@@ -1,4 +1,13 @@
 import Knex from 'knex';
+import { types } from 'pg';
+
+// Fix pg number conversion
+types.setTypeParser(types.builtins.NUMERIC, value => {
+  if (!value) {
+    return value;
+  }
+  return Number(value);
+});
 
 export const knex = Knex({
   useNullAsDefault: true,

@@ -6,6 +6,7 @@ import { HttpError } from './common/http-error';
 import { ValidationsError } from './common/validations-error';
 import { router as authRouter } from './modules/auth';
 import { router as userRouter } from './modules/user';
+import { router as entryRouter } from './modules/entry';
 
 const app = express();
 app.use(express.json());
@@ -13,6 +14,7 @@ app.use(express.json());
 // Setup routes
 app.use('/api', authRouter);
 app.use('/api', userRouter);
+app.use('/api', entryRouter);
 
 // Setup error handling
 const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {

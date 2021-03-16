@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<void> {
     table.decimal('amount', 13, 2).notNullable();
     table.text('category').notNullable();
     table.text('description');
-    table.date('date');
+    table.date('date').notNullable();
   });
 }
 
