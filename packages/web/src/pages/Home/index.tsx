@@ -2,11 +2,12 @@ import React from 'react';
 import { Redirect } from 'wouter';
 
 import { useAppContext } from '../../contexts/AppContext';
+import { useAuth } from '../../hooks/useAuth';
 
 export function Home() {
-  const { currentUser } = useAppContext();
+  const { user } = useAuth();
 
-  if (!currentUser) {
+  if (!user) {
     return <Redirect href="/login" />;
   }
 

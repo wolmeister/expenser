@@ -2010,6 +2010,11 @@ knex@^0.95.2:
     tarn "^3.0.1"
     tildify "2.0.0"
 
+ky@^0.27.0:
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/ky/-/ky-0.27.0.tgz#ecc9b195b9e1573ad6762a126bb3601d3bbd5b6c"
+  integrity sha512-pgaBuB6wI9DdMSOZBVh2WkcbkAdEG5AUEWuNhtThu6FLIpDbzqzC/fSMmqr/j1wwQyW3SP3KGau7EbzWNkQ/yg==
+
 language-subtag-registry@~0.3.2:
   version "0.3.21"
   resolved "https://registry.yarnpkg.com/language-subtag-registry/-/language-subtag-registry-0.3.21.tgz#04ac218bea46f04cb039084602c6da9e788dd45a"
@@ -2637,6 +2642,11 @@ react-dom@^17.0.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.1"
+
+react-hook-form@^6.15.4:
+  version "6.15.4"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-6.15.4.tgz#328003e1ccc096cd158899ffe7e3b33735a9b024"
+  integrity sha512-K+Sw33DtTMengs8OdqFJI3glzNl1wBzSefD/ksQw/hJf9CnOHQAU6qy82eOrh0IRNt2G53sjr7qnnw1JDjvx1w==
 
 react-is@^16.8.1:
   version "16.13.1"

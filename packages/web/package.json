@@ -10,8 +10,10 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "ky": "^0.27.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-hook-form": "^6.15.4",
     "wouter": "^2.7.4"
   },
   "devDependencies": {
