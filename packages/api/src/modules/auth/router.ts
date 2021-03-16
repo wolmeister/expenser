@@ -8,7 +8,10 @@ const router = Router();
 
 router.post(
   '/auth',
-  validate([body('email').isEmail().normalizeEmail(), body('password').notEmpty()]),
+  validate([
+    body('email', 'The email is required and must be valid').isEmail().normalizeEmail(),
+    body('password', 'The password is required').notEmpty(),
+  ]),
   async (req, res) => {
     res.send(await authenticate(req.body));
   }

@@ -10,9 +10,12 @@ const router = Router();
 router.post(
   '/users',
   validate([
-    body('name').notEmpty(),
-    body('email').notEmpty().isEmail().normalizeEmail(),
-    body('password').notEmpty(),
+    body('name', 'The user name is required').notEmpty(),
+    body('email', 'The user email is required and must be valid')
+      .notEmpty()
+      .isEmail()
+      .normalizeEmail(),
+    body('password', 'The user password is required').notEmpty(),
   ]),
   async (req, res) => {
     res.send(await addUser(req.body));
