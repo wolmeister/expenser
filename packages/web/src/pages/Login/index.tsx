@@ -1,5 +1,4 @@
 import React from 'react';
-import { Redirect } from 'wouter';
 import { useForm } from 'react-hook-form';
 
 import { useAuth } from '../../hooks/useAuth';
@@ -10,7 +9,7 @@ type FormData = {
 };
 
 export function Login() {
-  const { user, signIn } = useAuth();
+  const { signIn } = useAuth();
   const { register, handleSubmit, errors } = useForm<FormData>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
@@ -22,10 +21,6 @@ export function Login() {
       alert('Invalid credentials');
     }
   });
-
-  if (user) {
-    return <Redirect href="/" />;
-  }
 
   return (
     <div
