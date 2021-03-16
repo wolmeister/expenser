@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'wouter';
 
 import { useAuth } from '../../hooks/useAuth';
 
@@ -72,6 +73,8 @@ export function Login() {
 
         <button type="submit">Log in</button>
       </form>
+
+      <Link href="/signup">Don&apos;t have an account yet? Sign up here</Link>
     </div>
   );
 }
