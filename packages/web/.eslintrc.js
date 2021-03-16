@@ -26,8 +26,12 @@ module.exports = {
     // Prettier
     'prettier/prettier': 'error',
 
-    // Import
+    // React
     'react/jsx-filename-extension': ['warn', { extensions: ['.tsx'] }],
+    'react/prop-types': 'off',
+    'react/require-default-props': 'off',
+
+    // Import
     'import/prefer-default-export': 'off',
     'import/extensions': ['error', 'ignorePackages', { ts: 'never', tsx: 'never' }],
 
