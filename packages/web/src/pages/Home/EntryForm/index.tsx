@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { Input, Modal, Spacer, Text } from '@geist-ui/react';
+import { Calendar, DollarSign, Info, Tag } from '@geist-ui/react-icons';
+import { Controller, useForm } from 'react-hook-form';
 import { Entry } from '../../../models/entry';
 
 type EntryFormProps = {
+  open: boolean;
   entry?: Entry | null;
   onSave(entry: Entry): void;
-  onCancel(): void;
+  onClose(): void;
 };
 
 type EntryFormData = {
@@ -26,8 +29,8 @@ function formatDate(date: string) {
   return [year, String(month).padStart(2, '0'), String(day).padStart(2, '0')].join('-');
 }
 
-export function EntryForm({ entry, onSave, onCancel }: EntryFormProps) {
-  const { register, handleSubmit, errors, setValue, reset } = useForm<EntryFormData>({
+export function EntryForm({ open, entry, onSave, onClose }: EntryFormProps) {
+  const { register, handleSubmit, errors, setValue, reset, control } = useForm<EntryFormData>({
     mode: 'onSubmit',
     reValidateMode: 'onChange',
   });
@@ -51,64 +54,98 @@ export function EntryForm({ entry, onSave, onCancel }: EntryFormProps) {
   }, [entry, reset, setValue]);
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h3>Add entry</h3>
-      <form
-        onSubmit={onSubmit}
-        style={{ width: '350px', display: 'flex', flexDirection: 'column' }}
-      >
-        <label htmlFor="amount">Amount</label>
-        <input
-          type="number"
-          name="amount"
-          id="amount"
-          ref={register({
-            required: {
-              value: true,
-              message: 'Required field',
-            },
-            valueAsNumber: true,
-          })}
-        />
-        {errors.amount?.message ? <span>{errors.amount.message}</span> : null}
-
-        <label htmlFor="category">Category</label>
-        <input
-          type="text"
-          name="category"
-          id="category"
-          ref={register({
-            required: {
-              value: true,
-              message: 'Required field',
-            },
-          })}
-        />
-        {errors.category?.message ? <span>{errors.category.message}</span> : null}
-
-        <label htmlFor="description">Description</label>
-        <input type="text" name="description" id="description" ref={register()} />
-        {errors.description?.message ? <span>{errors.description.message}</span> : null}
-
-        <label htmlFor="date">Date</label>
-        <input
-          type="date"
-          name="date"
-          id="date"
-          ref={register({
-            required: {
-              value: true,
-              message: 'Required field',
-            },
-          })}
-        />
-        {errors.date?.message ? <span>{errors.date.message}</span> : null}
-
-        <button type="submit">Save</button>
-        <button type="button" onClick={onCancel}>
-          Cancel
-        </button>
-      </form>
-    </div>
+    <Modal open={open} onClose={onClose}>
+      <Modal.Title>{entry ? 'Edit entry' : 'Add entry'}</Modal.Title>
+      <Modal.Content>
+        <form onSubmit={onSubmit}>
+          {/* Amount */}
+          <Controller
+            as={<Input icon={<DollarSign />} placeholder="Amount" width="100%" />}
+            control={control}
+            name="amount"
+            defaultValue={entry?.amount || ''}
+            rules={{
+              required: {
+                value: true,
+                message: 'Field is required',
+              },
+              valueAsNumber: true,
+            }}
+          />
+          {errors.amount?.message ? (
+            <>
+              <Spacer y={0.2} />
+              <Text small type="error">
+                {errors.amount.message}
+              </Text>
+            </>
+          ) : null}
+          <Spacer y={0.5} />
+          {/* Category */}
+          <Controller
+            as={<Input icon={<Tag />} placeholder="Category" width="100%" />}
+            control={control}
+            name="category"
+            defaultValue={entry?.category || ''}
+            rules={{
+              required: {
+                value: true,
+                message: 'Field is required',
+              },
+            }}
+          />
+          {errors.category?.message ? (
+            <>
+              <Spacer y={0.2} />
+              <Text small type="error">
+                {errors.category.message}
+              </Text>
+            </>
+          ) : null}
+          <Spacer y={0.5} />
+          {/* Description */}
+          <Controller
+            as={<Input icon={<Info />} placeholder="Description" width="100%" />}
+            control={control}
+            name="description"
+            defaultValue={entry?.description || ''}
+          />
+          {errors.description?.message ? (
+            <>
+              <Spacer y={0.2} />
+              <Text small type="error">
+                {errors.description.message}
+              </Text>
+            </>
+          ) : null}
+          <Spacer y={0.5} />
+          {/* Date */}
+          <Controller
+            as={<Input icon={<Calendar />} type="date" placeholder="Date" width="100%" />}
+            control={control}
+            name="date"
+            defaultValue={entry?.date ? formatDate(entry.date) : ''}
+            rules={{
+              required: {
+                value: true,
+                message: 'Field is required',
+              },
+            }}
+          />
+          {errors.date?.message ? (
+            <>
+              <Spacer y={0.2} />
+              <Text small type="error">
+                {errors.date.message}
+              </Text>
+            </>
+          ) : null}
+        </form>
+      </Modal.Content>
+      <Modal.Action passive onClick={onClose}>
+        Cancel
+      </Modal.Action>
+      <Modal.Action onClick={onSubmit}>Save</Modal.Action>
+    </Modal>
   );
 }
