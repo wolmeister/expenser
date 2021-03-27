@@ -2,19 +2,16 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import { http } from '../../../http';
 import { Entry } from '../../../models/entry';
-import { useAuth } from '../../useAuth';
 
-async function createEntry(entry: Entry, token: string | null) {
+async function createEntry(entry: Entry) {
   return http<Entry>('/api/entries', {
     body: entry,
-    token,
   });
 }
 
 export function useCreateEntry() {
-  const { token } = useAuth();
   const queryClient = useQueryClient();
-  const query = useMutation((entry: Entry) => createEntry(entry, token), {
+  const query = useMutation((entry: Entry) => createEntry(entry), {
     async onSuccess() {
       await queryClient.invalidateQueries('entries');
     },

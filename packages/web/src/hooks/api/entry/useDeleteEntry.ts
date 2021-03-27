@@ -2,19 +2,16 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import { http } from '../../../http';
 import { Entry } from '../../../models/entry';
-import { useAuth } from '../../useAuth';
 
-async function deleteEntry(entry: Entry, token: string | null) {
+async function deleteEntry(entry: Entry) {
   return http<Entry>(`/api/entries/${entry.id}`, {
     method: 'DELETE',
-    token,
   });
 }
 
 export function useDeleteEntry() {
-  const { token } = useAuth();
   const queryClient = useQueryClient();
-  const query = useMutation((entry: Entry) => deleteEntry(entry, token), {
+  const query = useMutation((entry: Entry) => deleteEntry(entry), {
     async onSuccess(entry) {
       await queryClient.invalidateQueries('entries');
       await queryClient.invalidateQueries(['entry', entry.id]);

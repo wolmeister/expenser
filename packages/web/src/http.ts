@@ -1,9 +1,10 @@
+import { getJwt } from './jwt';
+
 type HttpOptions = {
   body?: unknown;
   method?: string;
   headers?: Record<string, string>;
   params?: Record<string, unknown>;
-  token?: string | null;
 };
 
 export async function http<T>(path: string, options: HttpOptions = {}): Promise<T> {
@@ -14,8 +15,8 @@ export async function http<T>(path: string, options: HttpOptions = {}): Promise<
   if (!headers.has('Content-Type')) {
     headers.append('Content-Type', 'application/json');
   }
-  if (!headers.has('Authorization') && options.token) {
-    headers.append('Authorization', `Bearer ${options.token}`);
+  if (!headers.has('Authorization') && getJwt()) {
+    headers.append('Authorization', `Bearer ${getJwt()}`);
   }
 
   let { method } = options;

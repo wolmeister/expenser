@@ -2,15 +2,13 @@ import { useQuery } from 'react-query';
 
 import { http } from '../../../http';
 import { Entry } from '../../../models/entry';
-import { useAuth } from '../../useAuth';
 
-async function getEntries(token: string | null) {
-  return http<Entry[]>('/api/entries', { token });
+async function getEntries() {
+  return http<Entry[]>('/api/entries');
 }
 
 export function useEntries() {
-  const { token } = useAuth();
-  const query = useQuery('entries', () => getEntries(token));
+  const query = useQuery('entries', () => getEntries());
 
   return {
     entries: query.data,

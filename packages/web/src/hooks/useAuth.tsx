@@ -1,30 +1,21 @@
-import React, {
-  createContext,
-  PropsWithChildren,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import { useMutation } from 'react-query';
+import React, { createContext, PropsWithChildren, useCallback, useContext, useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 import { http } from '../http';
+import { setJwt } from '../jwt';
 
 import { AuthRequest, AuthResponse } from '../models/auth';
 import { User } from '../models/user';
 
 type AuthContextData = {
   user: User | null;
-  token: string | null;
   signIn(authRequest: AuthRequest): Promise<void>;
   signOut(): void;
 };
 
-const LOCAL_STORAGE_TOKEN_KEY = '@Expenser/jwt';
 const LOCAL_STORAGE_USER_KEY = '@Expenser/user';
 
 const AuthContext = createContext<AuthContextData>({
   user: null,
-  token: null,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   async signIn() {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -32,6 +23,7 @@ const AuthContext = createContext<AuthContextData>({
 });
 
 function AuthProvider({ children }: PropsWithChildren<unknown>) {
+  const queryClient = useQueryClient();
   const { mutateAsync: authenticateAsync } = useMutation((authRequest: AuthRequest) =>
     http<AuthResponse>('/api/auth', { body: authRequest })
   );
@@ -44,14 +36,12 @@ function AuthProvider({ children }: PropsWithChildren<unknown>) {
     }
     return null;
   });
-  const [token, setToken] = useState(() => localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY));
 
   const signIn = useCallback(
     async (authRequest: AuthRequest) => {
       const result = await authenticateAsync(authRequest);
+      setJwt(result.token);
       setUser(result.user);
-      setToken(result.token);
-      localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, result.token);
       localStorage.setItem(LOCAL_STORAGE_USER_KEY, JSON.stringify(result.user));
     },
     [authenticateAsync]
@@ -59,13 +49,11 @@ function AuthProvider({ children }: PropsWithChildren<unknown>) {
 
   const signOut = useCallback(() => {
     setUser(null);
-    localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
     localStorage.removeItem(LOCAL_STORAGE_USER_KEY);
-  }, []);
+    queryClient.clear();
+  }, [queryClient]);
 
-  return (
-    <AuthContext.Provider value={{ user, token, signIn, signOut }}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ user, signIn, signOut }}>{children}</AuthContext.Provider>;
 }
 
 function useAuth() {
