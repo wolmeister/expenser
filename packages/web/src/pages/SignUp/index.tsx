@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Divider, Input, Note, Spacer, Text } from '@geist-ui/react';
-import { User, Lock, Zap, Mail, Trello } from '@geist-ui/react-icons';
+import { User, Lock, Zap, Mail } from '@geist-ui/react-icons';
 import { Link } from 'wouter';
-import { http } from '../../api/http';
 
 import { useAuth } from '../../hooks/useAuth';
+import { useCreateUser } from '../../hooks/api/user/useCreateUser';
 
 type SignUpFormData = {
   name: string;
@@ -16,6 +16,8 @@ type SignUpFormData = {
 
 export function SignUp() {
   const { signIn } = useAuth();
+  const { createUserAsync } = useCreateUser();
+
   const [signUpError, setSignUpError] = useState(false);
 
   const { register, handleSubmit, errors, watch } = useForm<SignUpFormData>({
@@ -27,9 +29,7 @@ export function SignUp() {
     try {
       setSignUpError(false);
 
-      await http.post('/api/users', {
-        json: data,
-      });
+      await createUserAsync(data);
 
       signIn(data);
     } catch (err) {
