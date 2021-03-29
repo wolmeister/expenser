@@ -17,6 +17,7 @@ export function EntryTable({ entries, onEditEntry, onDeleteEntry }: EntryTablePr
       return [];
     }
     return entries.map(entry => ({
+      source: entry,
       ...entry,
       type: entry.amount > 0 ? <Tag type="success">Income</Tag> : <Tag type="error">Expense</Tag>,
       operation: (_actions, rowData) => (
@@ -26,7 +27,7 @@ export function EntryTable({ entries, onEditEntry, onDeleteEntry }: EntryTablePr
             auto
             size="small"
             onClick={() => {
-              onDeleteEntry(rowData.rowValue);
+              onDeleteEntry(rowData.rowValue.source);
             }}
           />
           <Spacer x={0.5} />
@@ -35,7 +36,7 @@ export function EntryTable({ entries, onEditEntry, onDeleteEntry }: EntryTablePr
             auto
             size="small"
             onClick={() => {
-              onEditEntry(rowData.rowValue);
+              onEditEntry(rowData.rowValue.source);
             }}
           />
         </>
