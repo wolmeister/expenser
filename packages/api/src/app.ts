@@ -7,6 +7,7 @@ import { ValidationsError } from './common/validations-error';
 import { router as authRouter } from './modules/auth';
 import { router as userRouter } from './modules/user';
 import { router as entryRouter } from './modules/entry';
+import debug from './debug';
 
 const app = express();
 app.use(express.json());
@@ -30,6 +31,7 @@ const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
       status: err.statusCode,
     });
   } else {
+    debug.error(err);
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
       message: ReasonPhrases.INTERNAL_SERVER_ERROR,
       status: StatusCodes.INTERNAL_SERVER_ERROR,
