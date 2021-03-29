@@ -44,8 +44,7 @@ router.delete(
   validate([param('id', 'The entry id must be an int').isInt()]),
   async (req, res) => {
     const id = parseInt(req.params.id, 10);
-    await deleteEntry(id, await req.getUser());
-    res.sendStatus(StatusCodes.OK);
+    res.send(await deleteEntry(id, await req.getUser()));
   }
 );
 

@@ -39,13 +39,15 @@ export async function updateEntry(id: number, entry: Entry, user: User): Promise
   });
 }
 
-export async function deleteEntry(id: number, user: User): Promise<void> {
-  await getEntryByidAndValidateUser(id, user);
+export async function deleteEntry(id: number, user: User): Promise<Entry> {
+  const entry = await getEntryByidAndValidateUser(id, user);
   const deleted = await Entry.query().deleteById(id);
 
   if (!deleted) {
     throw new HttpError(StatusCodes.NOT_FOUND);
   }
+
+  return entry;
 }
 
 export async function getEntryById(id: number, user: User): Promise<Entry> {
@@ -53,5 +55,9 @@ export async function getEntryById(id: number, user: User): Promise<Entry> {
 }
 
 export async function getEntries(user: User): Promise<Entry[]> {
-  return Entry.query().where('userId', user.id);
+  return Entry.query()
+    .where('userId', user.id)
+    .orderBy('date', 'desc')
+    .orderBy('category', 'desc')
+    .orderBy('id', 'desc');
 }

@@ -23,7 +23,7 @@
     "express-validator": "^6.10.0",
     "http-status-codes": "^2.1.4",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.95.2",
+    "knex": "0.21.19",
     "objection": "^2.2.14",
     "pg": "^8.5.1"
   },
