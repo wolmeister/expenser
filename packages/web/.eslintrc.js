@@ -34,6 +34,7 @@ module.exports = {
     // Import
     'import/prefer-default-export': 'off',
     'import/extensions': ['error', 'ignorePackages', { ts: 'never', tsx: 'never' }],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: ['**/*.test.tsx'] }],
 
     // Typescript rules
     '@typescript-eslint/explicit-function-return-type': 'off',
