@@ -1,15 +1,12 @@
 import React, { FC } from 'react';
-import { fireEvent, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Switch } from 'wouter';
 
 import { render } from '../../../test/utils';
 import { Route } from '../../routes/Route';
-import { Home } from './index';
 import { setJwt } from '../../jwt';
-
-beforeEach(() => {
-  localStorage.clear();
-});
+import { Home } from './index';
 
 const Wrapper: FC = ({ children }) => (
   <Switch>
@@ -36,7 +33,7 @@ describe('Home', () => {
     it('should logout and redirect to login', async () => {
       render(<Home />, { wrapper: Wrapper });
 
-      fireEvent.click(screen.getByText('Logout'));
+      userEvent.click(screen.getByText('Logout'));
 
       expect(window.location.pathname).toBe('/login');
     });

@@ -1,23 +1,12 @@
 import React, { FC } from 'react';
-import { fireEvent, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
+import { screen, waitForElementToBeRemoved } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { rest } from 'msw';
-import { setupServer } from 'msw/node';
 import { Switch } from 'wouter';
 
-import { render } from '../../../test/utils';
+import { render, server } from '../../../test/utils';
 import { Route } from '../../routes/Route';
 import { Login } from './index';
-
-// Setup MSW
-const server = setupServer();
-
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
-
-beforeEach(() => {
-  localStorage.clear();
-});
 
 const Wrapper: FC = ({ children }) => (
   <Switch>
@@ -40,9 +29,9 @@ describe('Login', () => {
       );
       render(<Login />, { wrapper: Wrapper });
 
-      fireEvent.input(screen.getByTestId('email-input'), { target: { value: 'test@email.com' } });
-      fireEvent.input(screen.getByTestId('password-input'), { target: { value: '123' } });
-      fireEvent.submit(screen.getByTestId('submit-button'));
+      userEvent.type(screen.getByTestId('email-input'), 'test@email.com');
+      userEvent.type(screen.getByTestId('password-input'), '123');
+      userEvent.click(screen.getByTestId('submit-button'));
 
       await waitForElementToBeRemoved(() => screen.queryByTestId('submit-button'));
 
@@ -55,13 +44,11 @@ describe('Login', () => {
       server.use(rest.post('/api/auth', (req, res, ctx) => res(ctx.status(400))));
       render(<Login />, { wrapper: Wrapper });
 
-      fireEvent.input(screen.getByTestId('email-input'), { target: { value: 'test@email.com' } });
-      fireEvent.input(screen.getByTestId('password-input'), { target: { value: '123' } });
-      fireEvent.submit(screen.getByTestId('submit-button'));
+      userEvent.type(screen.getByTestId('email-input'), 'test@email.com');
+      userEvent.type(screen.getByTestId('password-input'), '123');
+      userEvent.click(screen.getByTestId('submit-button'));
 
-      await waitFor(() => screen.getByTestId('error-message'));
-
-      expect(screen.getByTestId('error-message')).toHaveTextContent(
+      expect(await screen.findByTestId('error-message')).toHaveTextContent(
         'The email address or password is incorrect.'
       );
     });
@@ -71,11 +58,9 @@ describe('Login', () => {
     it('should show an error in the required fields', async () => {
       render(<Login />, { wrapper: Wrapper });
 
-      fireEvent.submit(screen.getByTestId('submit-button'));
+      userEvent.click(screen.getByTestId('submit-button'));
 
-      await waitFor(() => screen.getByTestId('email-message'));
-
-      expect(screen.getByTestId('email-message')).toHaveTextContent('Field is required');
+      expect(await screen.findByTestId('email-message')).toHaveTextContent('Field is required');
       expect(screen.getByTestId('password-message')).toHaveTextContent('Field is required');
     });
   });
@@ -84,7 +69,7 @@ describe('Login', () => {
     it('should redirect to the signup page', () => {
       render(<Login />, { wrapper: Wrapper });
 
-      fireEvent.click(screen.getByTestId('signup-button'));
+      userEvent.click(screen.getByTestId('signup-button'));
 
       expect(window.location.pathname).toBe('/signup');
     });

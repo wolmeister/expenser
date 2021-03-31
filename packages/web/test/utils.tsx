@@ -1,8 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import 'whatwg-fetch';
 import React, { FC, ReactElement } from 'react';
+import { setupServer } from 'msw/node';
 import { render, RenderOptions } from '@testing-library/react';
 import { QueryClient, QueryClientProvider, setLogger } from 'react-query';
+
 import { AuthProvider } from '../src/hooks/useAuth';
 
 // Disable react-query logger
@@ -44,4 +46,16 @@ const customRender = (ui: ReactElement, options?: RenderOptions) => {
   return render(ui, { ...options, wrapper });
 };
 
-export { customRender as render };
+// Setup MSW
+const server = setupServer();
+
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
+
+// Setup default cleanups
+beforeEach(() => {
+  localStorage.clear();
+});
+
+export { customRender as render, server };
