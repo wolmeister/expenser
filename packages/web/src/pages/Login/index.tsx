@@ -59,7 +59,7 @@ export function Login() {
         <Spacer y={1.5} />
         {signInError && (
           <>
-            <Note type="error" label={false}>
+            <Note type="error" label={false} data-testid="error-message">
               The email address or password is incorrect.
             </Note>
             <Spacer y={1.5} />
@@ -81,6 +81,7 @@ export function Login() {
                 message: 'Email is invalid',
               },
             })}
+            data-testid="email-input"
           />
           {errors.email?.message ? (
             <>
@@ -103,6 +104,7 @@ export function Login() {
                 message: 'Field is required',
               },
             })}
+            data-testid="password-input"
           />
           {errors.password?.message ? (
             <>
@@ -113,11 +115,20 @@ export function Login() {
             </>
           ) : null}
           <Spacer y={1} />
-          <Button type="secondary-light" htmlType="submit" style={{ width: '100%' }}>
+          <Button
+            type="secondary-light"
+            htmlType="submit"
+            style={{ width: '100%' }}
+            data-testid="submit-button"
+          >
             Log in
           </Button>
           <Spacer y={1} />
-          <Link href="/signup" style={{ textAlign: 'center', display: 'block' }}>
+          <Link
+            href="/signup"
+            style={{ textAlign: 'center', display: 'block' }}
+            data-testid="signup-button"
+          >
             Don&apos;t have an account yet? Sign up here
           </Link>
         </form>
