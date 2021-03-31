@@ -67,7 +67,7 @@ export function SignUp() {
         <Spacer y={1.5} />
         {signUpError && (
           <>
-            <Note type="error" label={false}>
+            <Note type="error" label={false} data-testid="signup-error">
               There&apos;s already an account associated with that email.
               <br />
               <Text>
@@ -84,6 +84,7 @@ export function SignUp() {
             placeholder="Name"
             width="100%"
             name="name"
+            data-testid="name-input"
             ref={register({
               required: {
                 value: true,
@@ -94,7 +95,7 @@ export function SignUp() {
           {errors.name?.message ? (
             <>
               <Spacer y={0.2} />
-              <Text small type="error">
+              <Text small type="error" data-testid="name-error">
                 {errors.name.message}
               </Text>
             </>
@@ -106,6 +107,7 @@ export function SignUp() {
             placeholder="Email"
             width="100%"
             name="email"
+            data-testid="email-input"
             ref={register({
               required: {
                 value: true,
@@ -120,7 +122,7 @@ export function SignUp() {
           {errors.email?.message ? (
             <>
               <Spacer y={0.2} />
-              <Text small type="error">
+              <Text small type="error" data-testid="email-error">
                 {errors.email.message}
               </Text>
             </>
@@ -133,6 +135,7 @@ export function SignUp() {
             placeholder="Password"
             width="100%"
             name="password"
+            data-testid="password-input"
             ref={register({
               required: {
                 value: true,
@@ -143,7 +146,7 @@ export function SignUp() {
           {errors.password?.message ? (
             <>
               <Spacer y={0.2} />
-              <Text small type="error">
+              <Text small type="error" data-testid="password-error">
                 {errors.password.message}
               </Text>
             </>
@@ -156,6 +159,7 @@ export function SignUp() {
             placeholder="Password confirmation"
             width="100%"
             name="passwordConfirmation"
+            data-testid="password-confirmation-input"
             ref={register({
               required: {
                 value: true,
@@ -167,7 +171,7 @@ export function SignUp() {
           {errors.passwordConfirmation?.message ? (
             <>
               <Spacer y={0.2} />
-              <Text small type="error">
+              <Text small type="error" data-testid="password-confirmation-error">
                 {errors.passwordConfirmation.message}
               </Text>
             </>
