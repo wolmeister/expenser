@@ -32,7 +32,7 @@ const Wrapper: FC = ({ children }) => (
 
 describe('Login', () => {
   describe('when the user enters valid credentials', () => {
-    it('should redirect to home', async () => {
+    it('should login and redirect to home', async () => {
       server.use(
         rest.post('/api/auth', (req, res, ctx) =>
           res(ctx.json({ user: { name: 'foo', email: 'foo' }, token: 'token' }))
@@ -64,6 +64,19 @@ describe('Login', () => {
       expect(screen.getByTestId('error-message')).toHaveTextContent(
         'The email address or password is incorrect.'
       );
+    });
+  });
+
+  describe('when the user enters no credentials', () => {
+    it('should show an error in the required fields', async () => {
+      render(<Login />, { wrapper: Wrapper });
+
+      fireEvent.submit(screen.getByTestId('submit-button'));
+
+      await waitFor(() => screen.getByTestId('email-message'));
+
+      expect(screen.getByTestId('email-message')).toHaveTextContent('Field is required');
+      expect(screen.getByTestId('password-message')).toHaveTextContent('Field is required');
     });
   });
 

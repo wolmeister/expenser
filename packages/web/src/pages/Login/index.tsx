@@ -86,7 +86,7 @@ export function Login() {
           {errors.email?.message ? (
             <>
               <Spacer y={0.2} />
-              <Text small type="error">
+              <Text small type="error" data-testid="email-message">
                 {errors.email.message}
               </Text>
             </>
@@ -109,7 +109,7 @@ export function Login() {
           {errors.password?.message ? (
             <>
               <Spacer y={0.2} />
-              <Text small type="error">
+              <Text small type="error" data-testid="password-message">
                 {errors.password.message}
               </Text>
             </>
