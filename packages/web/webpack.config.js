@@ -44,6 +44,9 @@ module.exports = {
     new HtmlWebpackPlugin({ template: 'public/index.html' }),
     new CleanWebpackPlugin(),
   ].filter(Boolean),
+  cache: {
+    type: isDevelopment ? 'memory' : 'filesystem',
+  },
   devServer: {
     hot: true,
     historyApiFallback: true,
