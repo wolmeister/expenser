@@ -12,7 +12,6 @@
     "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react",
     "types": ["vite/client", "node", "jest", "@testing-library/jest-dom"]
   },
