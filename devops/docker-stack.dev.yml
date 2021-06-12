@@ -1,0 +1,72 @@
+# for locally testing out swarm
+version: '3.8'
+
+services:
+  proxy:
+    container_name: expenser-dev-proxy
+    image: jwilder/nginx-proxy:latest
+    ports:
+      - '80:80'
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  web:
+    container_name: expenser-dev-web
+    image: 177.44.248.70:5000/expenser-web:latest
+    environment:
+      - VIRTUAL_HOST=expenser.com.local
+      - VIRTUAL_PORT=80
+    depends_on:
+      - api
+
+  api:
+    container_name: expenser-dev-api
+    image: 177.44.248.70:5000/expenser-api:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DB_HOST=db
+      - DB_DATABASE=expenser
+      - DB_USER_FILE=/run/secrets/db-user
+      - DB_PASSWORD_FILE=/run/secrets/db-password
+      - DB_MIN_POOL=2
+      - DB_MAX_POOL=10
+      - JWT_SECRET_FILE=/run/secrets/jwt-secret
+      - VIRTUAL_HOST=api.expenser.com.local
+      - VIRTUAL_PORT=3000
+    secrets:
+      - db-user
+      - db-password
+      - jwt-secret
+
+  db:
+    container_name: expenser-dev-db
+    image: postgres:13
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=expenser
+      - POSTGRES_USER_FILE=/run/secrets/db-user
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+    secrets:
+      - db-user
+      - db-password
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $$(cat $$POSTGRES_USER_FILE) -d $$POSTGRES_DB']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  dbdata:
+
+secrets:
+  db-user:
+    file: ./dev-secrets/db-user.txt
+  db-password:
+    file: ./dev-secrets/db-password.txt
+  jwt-secret:
+    file: ./dev-secrets/jwt-secret.txt

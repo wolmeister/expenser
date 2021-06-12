@@ -13,8 +13,6 @@ Model.knex(knex);
 const start = async () => {
   // Execute migrations
   try {
-    console.log('pgConnectionConfig', pgConnectionConfig);
-
     await migrate(pgConnectionConfig, join(__dirname, '..', 'migrations'));
   } catch (error) {
     debug.error(error);
