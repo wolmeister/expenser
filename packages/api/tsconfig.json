@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "strict": true,
     "allowJs": false,
-    "outDir": "dist/src"
+    "outDir": "dist"
   },
   "include": ["./src"]
 }
