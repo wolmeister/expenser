@@ -18,7 +18,7 @@ const corsWhitelist = ['http://expenser.com.local', 'http://expenser.wolmeister.
 
 app.use(
   cors({
-    origin(origin, callback) {
+    origin: (origin, callback) => {
       if (process.env.NODE_ENV !== 'production') {
         callback(null, true);
         return;
@@ -26,7 +26,8 @@ app.use(
       if (origin && corsWhitelist.includes(origin)) {
         callback(null, true);
       }
-      callback(new Error('Not allowed by CORS'));
+      const errorMsg = `Origin${origin ? ` "${origin}"` : ''} not allowed by CORS`;
+      callback(new HttpError(StatusCodes.FORBIDDEN, errorMsg));
     },
   })
 );
