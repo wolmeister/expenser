@@ -8,6 +8,7 @@ import { ValidationsError } from './common/validations-error';
 import { router as authRouter } from './modules/auth';
 import { router as userRouter } from './modules/user';
 import { router as entryRouter } from './modules/entry';
+import { getEnv } from './env';
 import debug from './debug';
 
 const app = express();
@@ -19,7 +20,7 @@ const corsWhitelist = ['http://expenser.com.local', 'http://expenser.wolmeister.
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (process.env.NODE_ENV !== 'production') {
+      if (getEnv('NODE_ENV') !== 'production') {
         callback(null, true);
         return;
       }
