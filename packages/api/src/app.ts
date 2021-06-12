@@ -25,6 +25,7 @@ app.use(
       }
       if (origin && corsWhitelist.includes(origin)) {
         callback(null, true);
+        return;
       }
       const errorMsg = `Origin${origin ? ` "${origin}"` : ''} not allowed by CORS`;
       callback(new HttpError(StatusCodes.FORBIDDEN, errorMsg));
