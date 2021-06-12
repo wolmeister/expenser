@@ -22,6 +22,7 @@ declare global {
       DB_MIN_POOL?: string;
       DB_MAX_POOL?: string;
       JWT_SECRET?: string;
+      NODE_ENV: 'development' | 'production';
     }
   }
 }

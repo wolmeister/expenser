@@ -1,5 +1,6 @@
 import { StatusCodes, ReasonPhrases } from 'http-status-codes';
 import express, { ErrorRequestHandler } from 'express';
+import cors from 'cors';
 import 'express-async-errors';
 
 import { HttpError } from './common/http-error';
@@ -11,6 +12,24 @@ import debug from './debug';
 
 const app = express();
 app.use(express.json());
+
+// Allow cors only for the application domains
+const corsWhitelist = ['http://expenser.com.local', 'http://expenser.wolmeister.com'];
+
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (process.env.NODE_ENV !== 'production') {
+        callback(null, true);
+        return;
+      }
+      if (origin && corsWhitelist.includes(origin)) {
+        callback(null, true);
+      }
+      callback(new Error('Not allowed by CORS'));
+    },
+  })
+);
 
 // Setup routes
 app.use('/api', authRouter);
