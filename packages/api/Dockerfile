@@ -27,4 +27,4 @@ COPY pnpm-lock.yaml ./
 COPY --from=build /app/dist dist
 RUN pnpm install --frozen-lockfile
 
-CMD ["node", "dist/index.js"]
+CMD ["node", "dist/src/index.js"]

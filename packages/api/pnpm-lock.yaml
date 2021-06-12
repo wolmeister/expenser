@@ -26,9 +26,12 @@ specifiers:
   http-status-codes: ^2.1.4
   jsonwebtoken: ^8.5.1
   knex: 0.21.19
+  ncp: ^2.0.0
   objection: ^2.2.14
   pg: ^8.5.1
+  postgres-migrations: ^5.1.1
   prettier: ^2.2.1
+  rimraf: ^3.0.2
   ts-node-dev: ^1.1.6
   typescript: ^4.2.3
 
@@ -44,6 +47,7 @@ dependencies:
   knex: 0.21.19_pg@8.6.0
   objection: 2.2.15_knex@0.21.19
   pg: 8.6.0
+  postgres-migrations: 5.1.1
 
 devDependencies:
   '@types/bcryptjs': 2.4.2
@@ -62,7 +66,9 @@ devDependencies:
   eslint-import-resolver-typescript: 2.4.0_865bf980219d6c4beaad3708398fa6e4
   eslint-plugin-import: 2.23.4_eslint@7.28.0
   eslint-plugin-prettier: 3.4.0_441ef98f5280b4c825fe505e43fc5698
+  ncp: 2.0.0
   prettier: 2.3.1
+  rimraf: 3.0.2
   ts-node-dev: 1.1.6_typescript@4.3.2
   typescript: 4.3.2
 
@@ -2339,6 +2345,11 @@ packages:
     resolution: {integrity: sha1-Sr6/7tdUHywnrPspvbvRXI1bpPc=}
     dev: true
 
+  /ncp/2.0.0:
+    resolution: {integrity: sha1-GVoh1sRuNh0vsSgbo4uR6d9727M=}
+    hasBin: true
+    dev: true
+
   /negotiator/0.6.2:
     resolution: {integrity: sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==}
     engines: {node: '>= 0.6'}
@@ -2727,6 +2738,17 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       xtend: 4.0.2
+
+  /postgres-migrations/5.1.1:
+    resolution: {integrity: sha512-G5QgHhmgOUFJtkNsYi7tYXi2vit9hzJCm+HbsAVa9mhR6tW9lwX/o/s9Rbnx574BVRvkV5+gPWxGAP9l3FyBKg==}
+    engines: {node: '>10.17.0'}
+    hasBin: true
+    dependencies:
+      pg: 8.6.0
+      sql-template-strings: 2.2.2
+    transitivePeerDependencies:
+      - pg-native
+    dev: false
 
   /prelude-ls/1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -3143,6 +3165,11 @@ packages:
   /sprintf-js/1.0.3:
     resolution: {integrity: sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=}
     dev: true
+
+  /sql-template-strings/2.2.2:
+    resolution: {integrity: sha1-PxFQiiWt384hejBCqdMAwxk7lv8=}
+    engines: {node: '>=4.0.0'}
+    dev: false
 
   /static-extend/0.1.2:
     resolution: {integrity: sha1-YICcOcv/VTNyJv1eC1IPNB8ftcY=}
