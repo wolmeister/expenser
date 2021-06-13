@@ -18,7 +18,7 @@ const getApiUrl = () => {
     return '/api';
   }
   const port = location.port ? `:${location.port}` : '';
-  return `${location.protocol}//api.${location.hostname}${port}${location.pathname}`;
+  return `${location.protocol}//api.${location.hostname}${port}`;
 };
 
 const API_URL = getApiUrl();
