@@ -14,6 +14,13 @@ import debug from './debug';
 const app = express();
 app.use(express.json());
 
+// Setup health check endpoint
+app.get('/health', (_req, res) => {
+  res.send({
+    status: 'ok',
+  });
+});
+
 // Allow cors only for the application domains
 const corsWhitelist = ['http://expenser.com.local', 'http://expenser.wolmeister.com'];
 
@@ -38,13 +45,6 @@ app.use(
 app.use('/', authRouter);
 app.use('/', userRouter);
 app.use('/', entryRouter);
-
-// Setup health check endpoint
-app.get('/health', (_req, res) => {
-  res.send({
-    status: 'ok',
-  });
-});
 
 // Setup error handling
 const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
