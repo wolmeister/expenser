@@ -18,6 +18,11 @@ services:
       - VIRTUAL_PORT=80
     depends_on:
       - api
+    healthcheck:
+      test: ['CMD-SHELL', 'wget --spider http://localhost || exit 1']
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   api:
     container_name: expenser-dev-api
@@ -41,6 +46,11 @@ services:
       - db-user
       - db-password
       - jwt-secret
+    healthcheck:
+      test: ['CMD-SHELL', 'wget --spider http://localhost:3000/health || exit 1']
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   db:
     container_name: expenser-dev-db
