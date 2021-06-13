@@ -1,9 +1,10 @@
 import { join } from 'path';
 import { Model } from 'objection';
 import { migrate } from 'postgres-migrations';
+import retry from 'async-retry';
 
 import debug from './debug';
-import { knex, pgConnectionConfig } from './knex';
+import { isPgRunning, knex, pgConnectionConfig } from './knex';
 import { app } from './app';
 import { getEnv } from './env';
 
@@ -11,6 +12,22 @@ import { getEnv } from './env';
 Model.knex(knex);
 
 const start = async () => {
+  // Wait for the postrgres to be running
+  try {
+    await retry(
+      async () => {
+        const pgIsRunning = await isPgRunning();
+        if (!pgIsRunning) {
+          throw new Error('Postgres is not running');
+        }
+      },
+      { retries: 5 }
+    );
+  } catch (error) {
+    debug.error(error);
+    process.exit(-1);
+  }
+
   // Execute migrations
   try {
     await migrate(pgConnectionConfig, join(__dirname, '..', 'migrations'));

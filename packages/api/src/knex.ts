@@ -1,5 +1,7 @@
-import Knex, { StaticConnectionConfig } from 'knex';
+import { Socket } from 'net';
+import Knex from 'knex';
 import { types } from 'pg';
+
 import { getEnv } from './env';
 
 // Fix pg number conversion
@@ -30,3 +32,29 @@ export const knex = Knex({
     tableName: 'knex_migrations',
   },
 });
+
+export async function isPgRunning(): Promise<boolean> {
+  const promise = new Promise((resolve, reject) => {
+    const socket = new Socket();
+    const onError = () => {
+      socket.destroy();
+      reject();
+    };
+
+    socket.setTimeout(1000);
+    socket.once('error', onError);
+    socket.once('timeout', onError);
+
+    socket.connect(pgConnectionConfig.port, pgConnectionConfig.host, () => {
+      socket.end();
+      resolve(null);
+    });
+  });
+
+  try {
+    await promise;
+    return true;
+  } catch {
+    return false;
+  }
+}
