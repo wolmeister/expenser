@@ -52,7 +52,10 @@ module.exports = {
     historyApiFallback: true,
     port: 3000,
     proxy: {
-      '/api': 'http://localhost:3001',
+      '/api': {
+        target: 'http://localhost:3001',
+        pathRewrite: { '^/api': '' },
+      },
     },
   },
 };

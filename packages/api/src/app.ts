@@ -35,9 +35,9 @@ app.use(
 );
 
 // Setup routes
-app.use('/api', authRouter);
-app.use('/api', userRouter);
-app.use('/api', entryRouter);
+app.use('/', authRouter);
+app.use('/', userRouter);
+app.use('/', entryRouter);
 
 // Setup error handling
 const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
