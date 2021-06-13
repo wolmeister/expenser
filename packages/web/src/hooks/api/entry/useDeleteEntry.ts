@@ -4,7 +4,7 @@ import { http } from '../../../http';
 import { Entry } from '../../../models/entry';
 
 async function deleteEntry(entry: Entry) {
-  return http<Entry>(`/api/entries/${entry.id}`, {
+  return http<Entry>(`/entries/${entry.id}`, {
     method: 'DELETE',
   });
 }

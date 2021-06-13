@@ -25,7 +25,7 @@ const AuthContext = createContext<AuthContextData>({
 function AuthProvider({ children }: PropsWithChildren<unknown>) {
   const queryClient = useQueryClient();
   const { mutateAsync: authenticateAsync } = useMutation((authRequest: AuthRequest) =>
-    http<AuthResponse>('/api/auth', { body: authRequest })
+    http<AuthResponse>('/auth', { body: authRequest })
   );
 
   const [user, setUser] = useState<User | null>(() => {

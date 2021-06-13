@@ -4,7 +4,7 @@ import { http } from '../../../http';
 import { Entry } from '../../../models/entry';
 
 async function getEntry(id: number) {
-  return http<Entry>(`/api/entries/${id}`);
+  return http<Entry>(`/entries/${id}`);
 }
 
 export function useEntry(id: number) {

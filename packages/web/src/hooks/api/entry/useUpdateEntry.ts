@@ -4,7 +4,7 @@ import { http } from '../../../http';
 import { Entry } from '../../../models/entry';
 
 async function updateEntry(entry: Entry) {
-  return http<Entry>(`/api/entries/${entry.id}`, {
+  return http<Entry>(`/entries/${entry.id}`, {
     method: 'PUT',
     body: entry,
   });

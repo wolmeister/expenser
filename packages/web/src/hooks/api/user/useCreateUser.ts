@@ -4,7 +4,7 @@ import { http } from '../../../http';
 import { User } from '../../../models/user';
 
 async function createUser(user: User) {
-  return http<User>('/api/users', {
+  return http<User>('/users', {
     body: user,
   });
 }
