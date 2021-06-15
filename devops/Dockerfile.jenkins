@@ -1,0 +1,9 @@
+FROM jenkins/jenkins:lts-alpine
+
+USER root
+
+RUN apk update
+RUN apk add docker-cli
+RUN apk add npm && npm install -g pnpm
+
+USER jenkins
