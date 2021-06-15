@@ -49,4 +49,8 @@ node {
       }
     ])
   }
+
+  stage('Deploy') {
+    build job: 'expenser-deploy', parameters: [string(name: 'environment', value:'production')]
+  }
 }
