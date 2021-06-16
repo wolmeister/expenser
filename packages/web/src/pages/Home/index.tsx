@@ -92,7 +92,7 @@ export function Home() {
         <Zap fill="black" />
         <Spacer x={0.5} />
         <Text h4 style={{ margin: 0 }}>
-          Expenser - Automatic Deploy
+          Expenser - v1
         </Text>
         <Text small style={{ cursor: 'pointer', marginLeft: 'auto' }} onClick={signOut}>
           Logout
