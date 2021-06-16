@@ -53,8 +53,8 @@ services:
 
   web:
     image: 177.44.248.70:5000/expenser-web:latest
-    # networks:
-    # - traefik-public
+    networks:
+      - expenser-staging-traefik
     depends_on:
       - api
     deploy:
@@ -87,6 +87,8 @@ services:
 
   api:
     image: 177.44.248.70:5000/expenser-api:latest
+    networks:
+      - expenser-staging-traefik
     depends_on:
       - db
     environment:
@@ -132,6 +134,8 @@ services:
 
   db:
     image: postgres:13
+    networks:
+      - expenser-staging-traefik
     volumes:
       - dbdata:/var/lib/postgresql/data
     environment:
