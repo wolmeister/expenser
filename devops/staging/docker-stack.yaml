@@ -4,7 +4,9 @@ services:
   proxy:
     image: jwilder/nginx-proxy:latest
     ports:
-      - '80:82'
+      - target: 80
+        published: 82
+        mode: host
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
