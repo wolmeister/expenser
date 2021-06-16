@@ -30,7 +30,7 @@ services:
       # Enable Docker in Traefik, so that it reads labels from Docker services
       - --providers.docker=true
       # Add a constraint to only use services with the label "traefik.constraint-label=traefik-public-staging"
-      - --providers.docker.constraints=Label(`traefik.constraint-label`, `traefik-public`)
+      - --providers.docker.constraints=Label(`traefik.constraint-label`, `traefik-public-stagign`)
       # Do not expose all Docker services, only the ones explicitly exposed
       - --providers.docker.exposedbydefault=false
       # Enable Docker Swarm mode
