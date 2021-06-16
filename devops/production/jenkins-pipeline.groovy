@@ -51,6 +51,6 @@ node {
   }
 
   stage('Deploy') {
-    build job: 'expenser-prodution-deploy'
+    build job: 'expenser-production-deploy'
   }
 }
