@@ -1,0 +1,33 @@
+version: '3.8'
+
+# Don´t forget to create the network before deploying it
+# docker network create --driver=overlay traefik
+
+networks:
+  traefik:
+    external: true
+
+services:
+  traefik:
+    image: traefik:v2.2
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - traefik
+    ports:
+      - '80:80'
+      - '8080:8080' # traefik dashboard
+    deploy:
+      restart_policy:
+        condition: any
+      labels:
+        - 'traefik.enable=true'
+    command:
+      - --api
+      - --api.insecure=true
+      - --log.level=DEBUG
+      - --providers.docker=true
+      - --providers.docker.swarmMode=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=traefik
+      - --entrypoints.web.address=:80

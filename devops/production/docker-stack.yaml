@@ -1,59 +1,16 @@
 version: '3.8'
 
 networks:
-  expenser-production-traefik:
+  api:
+  traefik:
     external: true
-    driver: overlay
 
 services:
-  proxy:
-    image: traefik:v2.2
-    ports:
-      # Traefik service
-      - target: 80
-        published: 81
-        mode: host
-      # Traefik Admin
-      - target: 8080
-        published: 9091
-        mode: host
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    networks:
-      - expenser-production-traefik
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
-    command:
-      # Enable Docker in Traefik, so that it reads labels from Docker services
-      - --providers.docker=true
-      # Add a constraint to only use services with the label "traefik.constraint-label=label=expenser-production"
-      - --providers.docker.constraints=Label(`traefik.constraint-label`, `label=expenser-production`)
-      # Do not expose all Docker services, only the ones explicitly exposed
-      - --providers.docker.exposedbydefault=false
-      # Enable Docker Swarm mode
-      - --providers.docker.swarmmode
-      # Enable the access log, with HTTP requests
-      - --accesslog
-      # Enable the Traefik log, for configurations and errors
-      - --log
-      # Enable the Dashboard and API
-      - --api
-      - --api.insecure=true
-    labels:
-      # Enable Traefik for this service, to make it available in the public network
-      - traefik.enable=true
-      # Use the traefik-public network (declared below)
-      - traefik.docker.network=expenser-production-traefik
-      # Use the custom label "traefik.constraint-label=label=expenser-production"
-      # This public Traefik will only use services with this label
-      - traefik.constraint-label=label=expenser-production
-
   web:
     image: 177.44.248.70:5000/expenser-web:stable
-    # networks:
-    # - traefik-public
+    networks:
+      - traefik
+      - api
     depends_on:
       - api
     deploy:
@@ -73,11 +30,10 @@ services:
         window: 20s
       labels:
         - traefik.enable=true
-        - traefik.constraint-label=label=expenser-production
-        - traefik.docker.network=expenser-production-traefik
-        - traefik.http.routers.web.rule=Host(`expenser.wolmeister.com`)
-        - traefik.http.services.web.loadbalancer.server.port=80
-        - traefik.http.services.web.loadbalancer.sticky.cookie=true
+        - traefik.http.routers.web-expenser-production.rule=Host(`expenser.wolmeister.com`)
+        - traefik.http.routers.web-expenser-production.entrypoints=web
+        - traefik.http.services.web-expenser-production.loadbalancer.server.port=80
+        - traefik.http.services.web-expenser-production.loadbalancer.sticky.cookie=true
     healthcheck:
       test: ['CMD-SHELL', 'wget --spider http://localhost || exit 1']
       interval: 5s
@@ -86,6 +42,9 @@ services:
 
   api:
     image: 177.44.248.70:5000/expenser-api:stable
+    networks:
+      - traefik
+      - api
     depends_on:
       - db
     environment:
@@ -119,10 +78,9 @@ services:
         window: 20s
       labels:
         - traefik.enable=true
-        - traefik.constraint-label=label=expenser-production
-        - traefik.docker.network=expenser-production-traefik
-        - traefik.http.routers.api.rule=Host(`api.expenser.wolmeister.com`)
-        - traefik.http.services.api.loadbalancer.server.port=3000
+        - traefik.http.routers.api-expenser-production.rule=Host(`api.expenser.wolmeister.com`)
+        - traefik.http.routers.api-expenser-production.entrypoints=web
+        - traefik.http.services.api-expenser-production.loadbalancer.server.port=3000
     healthcheck:
       test: ['CMD-SHELL', 'wget --spider http://localhost:3000/health || exit 1']
       interval: 5s
@@ -131,6 +89,8 @@ services:
 
   db:
     image: postgres:13
+    networks:
+      - api
     volumes:
       - dbdata:/var/lib/postgresql/data
     environment:
