@@ -52,8 +52,8 @@ services:
 
   web:
     image: 177.44.248.70:5000/expenser-web:stable
-    networks:
-      - traefik-public
+    # networks:
+    # - traefik-public
     depends_on:
       - api
     deploy:
