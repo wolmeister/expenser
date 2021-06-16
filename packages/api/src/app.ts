@@ -22,7 +22,11 @@ app.get('/health', (_req, res) => {
 });
 
 // Allow cors only for the application domains
-const corsWhitelist = ['http://expenser.com.local', 'http://expenser.wolmeister.com'];
+const corsWhitelist = [
+  'http://expenser.com.local',
+  'http://expenser.wolmeister.com',
+  'http://staging.expenser.wolmeister.com',
+];
 
 app.use(
   cors({
