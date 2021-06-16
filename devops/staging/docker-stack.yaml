@@ -52,7 +52,7 @@ services:
       - DB_MIN_POOL=2
       - DB_MAX_POOL=10
       - JWT_SECRET_FILE=/run/secrets/jwt-secret
-      - VIRTUAL_HOST=staging.api.expenser.wolmeister.com
+      - VIRTUAL_HOST=api.staging.expenser.wolmeister.com
       - VIRTUAL_PORT=3000
     secrets:
       - db-user
