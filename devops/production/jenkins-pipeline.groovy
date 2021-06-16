@@ -2,7 +2,7 @@ node {
   def DOCKER_REGISTRY = 'http://177.44.248.70:5000'
 
   stage('Checkout repository') {
-    git branch: 'main', url: 'https://github.com/wolmeister/expenser.git'
+    git branch: 'production', url: 'https://github.com/wolmeister/expenser.git'
   }
 
   stage('Install dependencies') {
