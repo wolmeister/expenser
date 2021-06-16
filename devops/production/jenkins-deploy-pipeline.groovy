@@ -1,11 +1,7 @@
 node {
-  def STACK_YAML_URL = "https://raw.githubusercontent.com/wolmeister/expenser/main/devops/docker-stack.yaml"
+  def STACK_YAML_URL = "https://raw.githubusercontent.com/wolmeister/expenser/main/devops/production/docker-stack.yaml"
 
-  stage('Foo') {
-    sh 'echo ${environment}'
-  }
-
-  sshagent(credentials: ['ssh-production2']) {
+  sshagent(credentials: ['production-ssh']) {
     stage('Update secrets') {
       withCredentials([
         string(credentialsId: 'production-db-user', variable: 'DB_USER'),

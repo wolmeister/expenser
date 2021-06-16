@@ -2,11 +2,11 @@ node {
   def DOCKER_REGISTRY = 'http://177.44.248.70:5000'
 
   stage('Checkout repository') {
-    git branch: 'main', url: 'https://github.com/wolmeister/expenser.git'
+    git branch: 'staging', url: 'https://github.com/wolmeister/expenser.git'
   }
 
   stage('Install dependencies') {
-    // sh 'pnpm install'
+    sh 'pnpm install'
   }
 
   stage('Build and publish') {
@@ -21,7 +21,7 @@ node {
           sh 'echo test'
         }
         stage('Bake image') {
-          image = docker.build("expenser-api:${env.BUILD_TAG}", "./packages/api")
+          image = docker.build("expenser-api", "./packages/api")
         }
         stage('Publish image') {
           docker.withRegistry(DOCKER_REGISTRY) {
@@ -39,7 +39,7 @@ node {
           sh 'echo test'
         }
         stage('Bake image') {
-          image = docker.build("expenser-web:${env.BUILD_TAG}", "./packages/web")
+          image = docker.build("expenser-web", "./packages/web")
         }
         stage('Publish image') {
           docker.withRegistry(DOCKER_REGISTRY) {
@@ -51,6 +51,6 @@ node {
   }
 
   stage('Deploy') {
-    build job: 'expenser-deploy', parameters: [string(name: 'environment', value:'production')]
+    build job: 'expenser-staging-deploy'
   }
 }

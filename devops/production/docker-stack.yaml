@@ -1,9 +1,7 @@
-# for locally testing out swarm
 version: '3.8'
 
 services:
   proxy:
-    container_name: expenser-dev-proxy
     image: jwilder/nginx-proxy:latest
     ports:
       - '80:80'
@@ -11,13 +9,27 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
 
   web:
-    container_name: expenser-dev-web
-    image: 177.44.248.70:5000/expenser-web:latest
+    image: 177.44.248.70:5000/expenser-web:stable
     environment:
       - VIRTUAL_HOST=expenser.com.local
       - VIRTUAL_PORT=80
     depends_on:
       - api
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 20s
     healthcheck:
       test: ['CMD-SHELL', 'wget --spider http://localhost || exit 1']
       interval: 5s
@@ -25,11 +37,9 @@ services:
       retries: 5
 
   api:
-    container_name: expenser-dev-api
-    image: 177.44.248.70:5000/expenser-api:latest
+    image: 177.44.248.70:5000/expenser-api:stable
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     environment:
       - NODE_ENV=production
       - PORT=3000
@@ -46,6 +56,21 @@ services:
       - db-user
       - db-password
       - jwt-secret
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        order: start-first
+        failure_action: rollback
+        delay: 10s
+      rollback_config:
+        parallelism: 0
+        order: stop-first
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 20s
     healthcheck:
       test: ['CMD-SHELL', 'wget --spider http://localhost:3000/health || exit 1']
       interval: 5s
@@ -53,7 +78,6 @@ services:
       retries: 5
 
   db:
-    container_name: expenser-dev-db
     image: postgres:13
     volumes:
       - dbdata:/var/lib/postgresql/data
@@ -64,6 +88,13 @@ services:
     secrets:
       - db-user
       - db-password
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+        max_attempts: 3
+        window: 20s
     healthcheck:
       test: ['CMD-SHELL', 'pg_isready -U $$(cat $$POSTGRES_USER_FILE) -d $$POSTGRES_DB']
       interval: 5s
@@ -75,8 +106,8 @@ volumes:
 
 secrets:
   db-user:
-    file: ./dev-secrets/db-user.txt
+    file: ./db-user.txt
   db-password:
-    file: ./dev-secrets/db-password.txt
+    file: ./db-password.txt
   jwt-secret:
-    file: ./dev-secrets/jwt-secret.txt
+    file: ./jwt-secret.txt
