@@ -22,7 +22,7 @@ node {
     }
 
     stage('Update docker-stack.yaml') {
-      sh "ssh -t univates@177.44.248.70 'sudo wget ${STACK_YAML_URL} -O /opt/expenser/staging/docker-stack.yaml'"
+      sh "ssh -t univates@177.44.248.70 'sudo rm -f /opt/expenser/staging/docker-stack.yaml; sudo wget ${STACK_YAML_URL} -P /opt/expenser/staging'"
     }
 
     stage('Deploy') {
