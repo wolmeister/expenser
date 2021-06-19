@@ -1,22 +1,26 @@
 import request from 'supertest';
-import { Model } from 'objection';
+import { createMockPool, createMockQueryResult, QueryResultRowType } from 'slonik';
 
 import { app } from '../../../app';
-import { knex } from '../../../knex';
+
+// Mock slonik pool
+let queryResultMock: QueryResultRowType[] = [];
+
+const pool = createMockPool({
+  query: async () => createMockQueryResult(queryResultMock),
+});
+
+jest.mock('../../../pg', () => ({
+  get pgPool() {
+    return pool;
+  },
+}));
 
 describe('Auth Api', () => {
-  beforeAll(async () => {
-    Model.knex(knex);
-    await knex.migrate.latest();
-    await knex.seed.run();
-  });
-
-  afterAll(async () => {
-    await knex.destroy();
-  });
-
   describe('/users', () => {
     it('should return an error when name, email and password are not provided', done => {
+      queryResultMock = [];
+
       request(app)
         .post('/users')
         .expect('Content-Type', /json/)
@@ -51,6 +55,8 @@ describe('Auth Api', () => {
     });
 
     it('should return an error when the email is invalid', done => {
+      queryResultMock = [];
+
       request(app)
         .post('/users')
         .send({
@@ -84,6 +90,8 @@ describe('Auth Api', () => {
     // it('should return an error when a user with the email already exists', done => {});
 
     it('should return the user when created successfully', done => {
+      queryResultMock = [{ id: 1, email: 'user2@test.com', name: 'User Test' }];
+
       request(app)
         .post('/users')
         .send({
@@ -107,6 +115,8 @@ describe('Auth Api', () => {
     });
 
     it('should not return the user password', done => {
+      queryResultMock = [{ id: 1, email: 'user@test.com', name: 'User Test', password: 123 }];
+
       request(app)
         .post('/users')
         .send({
@@ -128,6 +138,8 @@ describe('Auth Api', () => {
 
   describe('/users/me', () => {
     it('should return an error if no users is authenticated', done => {
+      queryResultMock = [];
+
       request(app)
         .get('/users/me')
         .expect('Content-Type', /json/)
