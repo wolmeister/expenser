@@ -1,16 +1,11 @@
-import { Model } from 'objection';
 import { join } from 'path';
 import retry from 'async-retry';
 import { migrate } from 'postgres-migrations';
 
 import debug from './debug';
-import { isPgRunning, knex } from './knex';
 import { app } from './app';
 import { getEnv } from './env';
-import { pgConnectionConfig } from './pg';
-
-// Setup knex
-Model.knex(knex);
+import { isPgRunning, pgConnectionConfig } from './pg';
 
 const start = async () => {
   // Wait for the postrgres to be running

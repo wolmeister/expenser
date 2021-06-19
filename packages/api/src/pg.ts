@@ -1,3 +1,4 @@
+import { Socket } from 'net';
 import { createPool } from 'slonik';
 
 import { getEnv } from './env';
@@ -33,3 +34,29 @@ export const pgConnectionConfig = {
   password,
   port,
 };
+
+export async function isPgRunning(): Promise<boolean> {
+  const promise = new Promise((resolve, reject) => {
+    const socket = new Socket();
+    const onError = () => {
+      socket.destroy();
+      reject();
+    };
+
+    socket.setTimeout(1000);
+    socket.once('error', onError);
+    socket.once('timeout', onError);
+
+    socket.connect(port, host, () => {
+      socket.end();
+      resolve(null);
+    });
+  });
+
+  try {
+    await promise;
+    return true;
+  } catch {
+    return false;
+  }
+}
