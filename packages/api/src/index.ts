@@ -1,10 +1,13 @@
 import { Model } from 'objection';
+import { join } from 'path';
 import retry from 'async-retry';
+import { migrate } from 'postgres-migrations';
 
 import debug from './debug';
 import { isPgRunning, knex } from './knex';
 import { app } from './app';
 import { getEnv } from './env';
+import { pgConnectionConfig } from './pg';
 
 // Setup knex
 Model.knex(knex);
@@ -28,7 +31,7 @@ const start = async () => {
 
   // Execute migrations
   try {
-    await knex.migrate.latest();
+    await migrate(pgConnectionConfig, join(__dirname, '..', 'migrations'));
   } catch (error) {
     debug.error(error);
     process.exit(-1);

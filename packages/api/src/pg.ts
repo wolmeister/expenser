@@ -25,3 +25,11 @@ export const pgPool = createPool(connectionUrl, {
     },
   ],
 });
+
+export const pgConnectionConfig = {
+  host,
+  database,
+  user,
+  password,
+  port,
+};

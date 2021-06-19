@@ -34,6 +34,7 @@ specifiers:
   knex: 0.21.19
   objection: ^2.2.14
   pg: ^8.5.1
+  postgres-migrations: ^5.1.1
   prettier: ^2.2.1
   rimraf: ^3.0.2
   slonik: ^23.8.0
@@ -58,6 +59,7 @@ dependencies:
   knex: 0.21.19_pg@8.6.0+sqlite3@5.0.2
   objection: 2.2.15_knex@0.21.19
   pg: 8.6.0
+  postgres-migrations: 5.1.1
   slonik: 23.8.0
 
 devDependencies:
@@ -5192,6 +5194,17 @@ packages:
     engines: {node: '>=12'}
     dev: false
 
+  /postgres-migrations/5.1.1:
+    resolution: {integrity: sha512-G5QgHhmgOUFJtkNsYi7tYXi2vit9hzJCm+HbsAVa9mhR6tW9lwX/o/s9Rbnx574BVRvkV5+gPWxGAP9l3FyBKg==}
+    engines: {node: '>10.17.0'}
+    hasBin: true
+    dependencies:
+      pg: 8.6.0
+      sql-template-strings: 2.2.2
+    transitivePeerDependencies:
+      - pg-native
+    dev: false
+
   /prelude-ls/1.1.2:
     resolution: {integrity: sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=}
     engines: {node: '>= 0.8.0'}
@@ -5850,6 +5863,11 @@ packages:
   /sprintf-js/1.0.3:
     resolution: {integrity: sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=}
     dev: true
+
+  /sql-template-strings/2.2.2:
+    resolution: {integrity: sha1-PxFQiiWt384hejBCqdMAwxk7lv8=}
+    engines: {node: '>=4.0.0'}
+    dev: false
 
   /sqlite3/5.0.2:
     resolution: {integrity: sha512-1SdTNo+BVU211Xj1csWa8lV6KM0CtucDwRyA0VHl91wEH1Mgh7RxUpI4rVvG7OhHrzCSGaVyW5g8vKvlrk9DJA==}
