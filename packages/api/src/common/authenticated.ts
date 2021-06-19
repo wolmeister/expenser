@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
 import { decodeJwt } from '../modules/auth';
-import { User } from '../modules/user';
+import { findUserById } from '../modules/user';
 import { HttpError } from './http-error';
 
 export async function isAuthenticated(
@@ -20,7 +20,7 @@ export async function isAuthenticated(
 
   try {
     const payload = decodeJwt(token);
-    req.getUser = () => User.query().findById(payload.userId);
+    req.getUser = () => findUserById(payload.userId);
     next();
   } catch (err) {
     next(new HttpError(StatusCodes.UNAUTHORIZED));

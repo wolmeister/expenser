@@ -1,11 +1,11 @@
 import { User } from '../user';
 
-export interface AuthRequest {
+export type AuthRequest = {
   email: string;
   password: string;
-}
+};
 
-export interface AuthResponse {
+export type AuthResponse = {
   token: string;
-  user: User;
-}
+  user: Omit<User, 'password'>;
+};

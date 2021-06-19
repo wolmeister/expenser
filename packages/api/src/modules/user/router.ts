@@ -18,12 +18,22 @@ router.post(
     body('password', 'The user password is required').notEmpty(),
   ]),
   async (req, res) => {
-    res.send(await addUser(req.body));
+    // @TODO: Improve this
+    const user = await addUser(req.body);
+    res.send({
+      ...user,
+      password: undefined,
+    });
   }
 );
 
 router.get('/users/me', isAuthenticated, async (req, res) => {
-  res.send(await req.getUser());
+  // @TODO: Improve this
+  const user = await req.getUser();
+  res.send({
+    ...user,
+    password: undefined,
+  });
 });
 
 export { router };

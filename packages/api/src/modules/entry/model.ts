@@ -1,17 +1,23 @@
-import { Model } from 'objection';
+export type CreateEntry = {
+  userId: number;
+  amount: number;
+  category: number;
+  description?: number | null;
+  date: string;
+};
 
-export class Entry extends Model {
-  public static tableName = 'entries';
+export type UpdateEntry = {
+  amount: number;
+  category: number;
+  description?: number | null;
+  date: string;
+};
 
-  public id!: number;
-
-  public userId!: number;
-
-  public amount!: number;
-
-  public category!: number;
-
-  public description?: number | null;
-
-  public date!: string;
-}
+export type Entry = {
+  id: number;
+  userId: number;
+  amount: number;
+  category: number;
+  description?: number | null;
+  date: string;
+};

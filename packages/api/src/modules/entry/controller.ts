@@ -3,9 +3,16 @@ import { StatusCodes } from 'http-status-codes';
 import { HttpError } from '../../common/http-error';
 import { User } from '../user';
 import { Entry } from './model';
+import {
+  deleteEntryById,
+  findEntriesByUserId,
+  findEntryById,
+  insertEntry,
+  updateEntryById,
+} from './service';
 
 async function getEntryByidAndValidateUser(id: number, user: User): Promise<Entry> {
-  const entry = await Entry.query().findById(id);
+  const entry = await findEntryById(id);
 
   if (!entry) {
     throw new HttpError(StatusCodes.NOT_FOUND);
@@ -19,7 +26,7 @@ async function getEntryByidAndValidateUser(id: number, user: User): Promise<Entr
 }
 
 export async function addEntry(entry: Entry, user: User): Promise<Entry> {
-  return Entry.query().insert({
+  return insertEntry({
     userId: user.id,
     amount: entry.amount,
     category: entry.category,
@@ -31,7 +38,7 @@ export async function addEntry(entry: Entry, user: User): Promise<Entry> {
 export async function updateEntry(id: number, entry: Entry, user: User): Promise<Entry> {
   await getEntryByidAndValidateUser(id, user);
 
-  return Entry.query().updateAndFetchById(id, {
+  return updateEntryById(id, {
     amount: entry.amount,
     category: entry.category,
     description: entry.description,
@@ -41,7 +48,7 @@ export async function updateEntry(id: number, entry: Entry, user: User): Promise
 
 export async function deleteEntry(id: number, user: User): Promise<Entry> {
   const entry = await getEntryByidAndValidateUser(id, user);
-  const deleted = await Entry.query().deleteById(id);
+  const deleted = await deleteEntryById(id);
 
   if (!deleted) {
     throw new HttpError(StatusCodes.NOT_FOUND);
@@ -54,10 +61,6 @@ export async function getEntryById(id: number, user: User): Promise<Entry> {
   return getEntryByidAndValidateUser(id, user);
 }
 
-export async function getEntries(user: User): Promise<Entry[]> {
-  return Entry.query()
-    .where('userId', user.id)
-    .orderBy('date', 'desc')
-    .orderBy('category', 'desc')
-    .orderBy('id', 'desc');
+export async function getEntries(user: User): Promise<readonly Entry[]> {
+  return findEntriesByUserId(user.id);
 }
