@@ -1,4 +1,5 @@
 import { Socket } from 'net';
+import { join } from 'path';
 import Knex from 'knex';
 import { types } from 'pg';
 
@@ -12,7 +13,7 @@ types.setTypeParser(types.builtins.NUMERIC, value => {
   return Number(value);
 });
 
-export const pgConnectionConfig = {
+const pgConnectionConfig = {
   host: getEnv('DB_HOST'),
   database: getEnv('DB_DATABASE'),
   user: getEnv('DB_USER'),
@@ -20,7 +21,7 @@ export const pgConnectionConfig = {
   port: parseInt(getEnv('DB_PORT') || '5432', 10),
 };
 
-export const knex = Knex({
+const knexConfig: Knex.Config = {
   useNullAsDefault: true,
   client: 'pg',
   connection: pgConnectionConfig,
@@ -30,8 +31,19 @@ export const knex = Knex({
   },
   migrations: {
     tableName: 'knex_migrations',
+    directory: join(__dirname, '..', 'migrations'),
   },
-});
+};
+
+const knexConfigTest: Knex.Config = {
+  ...knexConfig,
+  client: 'sqlite3',
+  connection: ':memory:',
+};
+
+export const knex = Knex(
+  getEnv('NODE_ENV') === 'test' ? knexConfigTest : knexConfig
+);
 
 export async function isPgRunning(): Promise<boolean> {
   const promise = new Promise((resolve, reject) => {

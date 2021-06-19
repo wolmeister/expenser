@@ -11,12 +11,14 @@ type AppEnvironment = {
   DB_MAX_POOL?: string;
   JWT_SECRET?: string;
   DEBUG?: string;
-  NODE_ENV: 'development' | 'production';
+  NODE_ENV: 'development' | 'production' | 'test';
 };
 
 const cachedSecrets: Record<string, string | undefined> = {};
 
-export function getEnv<K extends keyof AppEnvironment>(key: K): AppEnvironment[K] {
+export function getEnv<K extends keyof AppEnvironment>(
+  key: K
+): AppEnvironment[K] {
   let value = process.env[key] || cachedSecrets[key];
 
   if (!value) {
