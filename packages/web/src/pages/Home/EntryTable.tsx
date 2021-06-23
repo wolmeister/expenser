@@ -11,6 +11,14 @@ type EntryTableProps = {
   onDeleteEntry(entry: Entry): void;
 };
 
+function formatDate(isoDate: string) {
+  const date = new Date(isoDate);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${month}/${day}/${year}`;
+}
+
 export function EntryTable({ entries, onEditEntry, onDeleteEntry }: EntryTableProps) {
   const tableData = useMemo<TableDataSource<Entry>[]>(() => {
     if (!entries) {
@@ -19,6 +27,7 @@ export function EntryTable({ entries, onEditEntry, onDeleteEntry }: EntryTablePr
     return entries.map(entry => ({
       source: entry,
       ...entry,
+      date: formatDate(entry.date),
       type: entry.amount > 0 ? <Tag type="success">Income</Tag> : <Tag type="error">Expense</Tag>,
       operation: (_actions, rowData) => (
         <>
