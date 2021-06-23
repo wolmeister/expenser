@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Button, Divider, Spacer, Text, useToasts } from '@geist-ui/react';
-import { Zap, Plus } from '@geist-ui/react-icons';
+import { Zap, Power, Plus } from '@geist-ui/react-icons';
 
 import { Entry } from '../../models/entry';
 import { EntryForm } from './EntryForm';
@@ -12,7 +12,7 @@ import { useDeleteEntry } from '../../hooks/api/entry/useDeleteEntry';
 import { EntryTable } from './EntryTable';
 
 export function Home() {
-  const { signOut } = useAuth();
+  const { signOut, user } = useAuth();
 
   const { entries } = useEntries();
   const { createEntry } = useCreateEntry();
@@ -94,9 +94,11 @@ export function Home() {
         <Text h4 style={{ margin: 0 }}>
           Expenser
         </Text>
-        <Text small style={{ cursor: 'pointer', marginLeft: 'auto' }} onClick={signOut}>
-          Logout
+        <Text small type="secondary" style={{ marginLeft: 'auto' }}>
+          {user?.email}
         </Text>
+        <Spacer x={0.5} />
+        <Button iconRight={<Power />} auto size="small" onClick={signOut} />
         <Spacer inline x={1.5} />
       </div>
       <Spacer inline y={0.5} />
