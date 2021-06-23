@@ -99,8 +99,8 @@ export function Home() {
         </Text>
         <Spacer x={0.5} />
         <Button
-          iconRight={<Power />}
           auto
+          iconRight={<Power />}
           size="small"
           onClick={signOut}
           data-testid="logout-button"
