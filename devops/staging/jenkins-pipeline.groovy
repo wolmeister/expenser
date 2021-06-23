@@ -15,10 +15,10 @@ node {
         def image;
 
         stage('Build') {
-          sh 'echo Build'
+          sh 'pnpm run api build'
         }
         stage('Test') {
-          sh 'echo test'
+          sh 'pnpm run api test'
         }
         stage('Bake image') {
           image = docker.build("expenser-api", "./packages/api")
@@ -33,10 +33,10 @@ node {
         def image;
         
         stage('Build') {
-          sh 'echo Build'
+          sh 'pnpm run web build'
         }
         stage('Test') {
-          sh 'echo test'
+          sh 'pnpm run web test'
         }
         stage('Bake image') {
           image = docker.build("expenser-web", "./packages/web")
