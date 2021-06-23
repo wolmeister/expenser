@@ -33,7 +33,7 @@ describe('Home', () => {
     it('should logout and redirect to login', async () => {
       render(<Home />, { wrapper: Wrapper });
 
-      userEvent.click(screen.getByText('Logout'));
+      userEvent.click(screen.getByTestId('logout-button'));
 
       expect(window.location.pathname).toBe('/login');
     });

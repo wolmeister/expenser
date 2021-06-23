@@ -98,7 +98,13 @@ export function Home() {
           {user?.email}
         </Text>
         <Spacer x={0.5} />
-        <Button iconRight={<Power />} auto size="small" onClick={signOut} />
+        <Button
+          iconRight={<Power />}
+          auto
+          size="small"
+          onClick={signOut}
+          data-testid="logout-button"
+        />
         <Spacer inline x={1.5} />
       </div>
       <Spacer inline y={0.5} />
